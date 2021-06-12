@@ -1,43 +1,48 @@
 #!/usr/bin/env python3
-
+from utils import ConfigLoader, LoadUniverse, CreatePortfolio
 import argparse
 
-def create_portfolio(args):
+def create_portfolio(args, config):
     """
     Сreate an optimal portfolio of assets and print it to stdout
+    :param config:
     :param args:
     :return: 0 - Ok, 1- Error
     """
-    print(args)
+    #universe = LoadUniverse(config, args.universe, args.period)
+    #portfolio = CreatePortfolio(universe, args.type, args.period, args.return , args.depo)
+    #print(portfolio)
     pass
 
-def analyze_portfolio(args):
+def analyze_portfolio(args, config):
     """
     Analyze mutual fund portfolios and print report to stdout
+    :param config:
     :param args:  arguments for analyze portfolios
     :return: 0 - Ok, 1- Error
     """
-    print(args)
+    print(args, config)
     pass
 
-def describe_(args):
+def describe_(args, config):
     """
     Describe assets of universe and covered mutual funds and print report to stdout
+    :param config:
     :param args:  arguments for describe
     :return: 0 - Ok, 1- Error
     """
-    print(args)
+    print(args, config)
     pass
 
 
-def main():
+def main(config):
 
     parser = argparse.ArgumentParser(description="Viportfolio help to analyze and create optimal portfolio \
                                                     (\'Markowitz porfolio\') of assets",
                                      prog='Viportfolio')
 
     # setup universe
-    parser.add_argument('u', type=str, default='ru',
+    parser.add_argument('universe', type=str, default='ru',
                        choices=['ru', 'em', 'us', 'cn', 'eu', 'all'],
                        help='universe of assets to analyze  (default: %(default)s)')
 
@@ -84,10 +89,12 @@ def main():
     args = parser.parse_args()
 
     try:
-        args.func(args)
+        args.func(args, config=config)
     except AttributeError:
         print( "usage: \n\tviportfolio [-h] {ru,em,us,cn,eu,all} {create,analyze,describe}\n\
         (choose from 'create', 'analyze', 'describe')")
 
+
 if __name__ == "__main__":
-    main()
+    #ConfigLoader.write_config_example()
+    main(ConfigLoader().config)
