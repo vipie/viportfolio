@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from utils import ConfigLoader, LoadUniverse, CreatePortfolio
+from utils import ConfigLoader, LoadUniverse
 import argparse
 
 def create_portfolio(args, config):
@@ -96,5 +96,5 @@ def main(config):
 
 
 if __name__ == "__main__":
-    #ConfigLoader.write_config_example()
-    main(ConfigLoader().config)
+    ConfigLoader.write_config_example()
+    #main(ConfigLoader().config)
