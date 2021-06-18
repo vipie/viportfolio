@@ -1,0 +1,65 @@
+{
+    "provider": "yahoo",
+    "universe": {
+        "ru": {
+            "description": "Russian stocks",
+            "funds": {
+                "franklin": {
+                    "description": "Franklin FTSE Russia ETF",
+                    "url": "https://www.franklintempleton.com/investor/investments-and-solutions/investment-options/etfs/portfolio/26356/franklin-ftse-russia-etf/FLRU?gwbid=gw.portfolio"
+                },
+                "msci": {
+                    "description": "MSCI Russia",
+                    "url": "https://app2.msci.com/eqb/custom_indexes/russia_performance.xls"
+                },
+                "seb": {
+                    "description": "SEB Russia Fund",
+                    "url": "http://seb.se/pow/fmk/2500/csv/SEB_Russia_Fund_52990077SLDTU8UMXF91.csv"
+                }
+            },
+            "holdings": {
+                "AFKS.ME": "Sistema",
+                "AFLT.ME": "Aeroflot",
+                "ALRS.ME": "Alrosa",
+                "CBOM.ME": "CREDIT BANK OF MOSCOW",
+                "CHMF.ME": "Severstal",
+                "DSKY.ME": "Detsky mir",
+                "FEES.ME": "Federal Grid Company of Unified Energy System",
+                "FIVE.ME": "X5 Retail Group N.V.",
+                "GAZP.ME": "Gazprom",
+                "GMKN.ME": "MMC \"NORILSK NICKEL",
+                "HYDR.ME": "RusHydro",
+                "IRAO.ME": "Inter RAO",
+                "LKOH.ME": "Lukoil",
+                "LNTA.ME": "Lenta",
+                "LSRG.ME": "LSR Group",
+                "MAGN.ME": "Magnitogorsk Iron & Steel Works",
+                "MGNT.ME": "Magnit",
+                "MOEX.ME": "Moscow Exchange",
+                "MTSS.ME": "Mobile TeleSystems",
+                "MVID.ME": "M.video",
+                "NLMK.ME": "NLMK",
+                "NVTK.ME": "Novatek",
+                "PHOR.ME": "PhosAgro",
+                "PIKK.ME": "PIK GROUP",
+                "PLZL.ME": "Polyus",
+                "POLY.ME": "Polymetal International plc",
+                "RNFT.ME": "RussNeft",
+                "ROSN.ME": "Rosneft",
+                "RTKM.ME": "Rostelecom",
+                "RUAL.ME": "Rusal",
+                "SBER.ME": "Sberbank of Russia",
+                "SBERP.ME": "Sberbank of Russia (Preferred)",
+                "SFIN.ME": "SAFMAR Financial investments",
+                "SNGS.ME": "Surgutneftegas",
+                "SNGSP.ME": "Surgutneftegas (Preferred)",
+                "TATN.ME": "TATNEFT",
+                "TATNP.ME": "TATNEFT (Preferred)",
+                "TRNFP.ME": "Transneft (Preferred)",
+                "UPRO.ME": "Unipro",
+                "VTBR.ME": "VTB Bank",
+                "YNDX.ME": "Yandex"
+            }
+        }
+    }
+}
