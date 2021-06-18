@@ -1,5 +1,24 @@
 import json
+# For time stamps
+from datetime import datetime
+#import cvxpy; cvxpy.installed_solvers()
 
+import pandas as pd
+import numpy as np
+from scipy import stats
+#import requests
+import time
+
+from tabulate import tabulate
+
+from pandas_datareader.data import DataReader
+from datetime import datetime
+from pypfopt.efficient_frontier import EfficientFrontier
+from pypfopt import risk_models
+from pypfopt import expected_returns
+from pypfopt.discrete_allocation import DiscreteAllocation, get_latest_prices
+
+from dateutil.relativedelta import relativedelta
 
 class ConfigLoader:
     def __init__(self):
@@ -59,20 +78,98 @@ class ConfigLoader:
                        'LNTA.ME': 'Lenta',
                        'SFIN.ME': 'SAFMAR Financial investments',
                        'MVID.ME': 'M.video'}
-        universe_dict = {'ru':
-                             {'description': 'Russian stocks',
-                            'funds': ru_funds},
-                            'holdings':ru_holdings}
+        universe_dict = {'ru': {'description': 'Russian stocks', 'funds': ru_funds, 'holdings': ru_holdings}}
 
         data = {'provider': 'yahoo',
                 'universe': universe_dict}
 
-        with open('config_example.json', 'w') as f:
+        with open('config.json', 'w') as f:
             json.dump(data, f, indent=4, sort_keys=True)
 
 class LoadUniverse:
     """
     Load data from web
     """
-    def __init__(self, config):
-        pass
+    def __init__(self, config, universe_code, period):
+
+        stocks = config['universe'][universe_code]['holdings'].keys()
+
+        # Set up End and Start times for data grab
+        end = datetime.utcnow()
+        start = end - relativedelta(months=period)
+
+        dfs = pd.DataFrame()
+        # For loop for grabing yahoo finance data and setting as a dataframe
+        for stock in stocks:
+            # Set DataFrame as the Stock Ticker
+            df_ = DataReader(stock, 'yahoo', start, end)
+            df_["symbol"] = stock
+            dfs = pd.concat([dfs, df_], axis=0)
+
+        self._universe = dfs
+
+    @property
+    def universe(self):
+        # TODO cache on file
+        return self._universe
+
+class PortfolioCreater:
+
+    def __init__(self, universe_df, type, target_ret, depo):
+        df_u = universe_df
+
+        df_u = df_u.universe.pivot_table(
+                                    index='Date',
+                                    columns='symbol',
+                                    values='Close',
+                                    aggfunc='sum'
+                                )
+
+        # Calculate expected returns and sample covariance
+        mu = expected_returns.mean_historical_return(df_u)
+        S = risk_models.sample_cov(df_u)
+
+        # Optimise the portfolio for maximal Sharpe ratio
+        ef = EfficientFrontier(mu, S)  # Use regularization (gamma=1)
+
+        weights = ef.max_sharpe()
+        cleaned_weights = ef.clean_weights()
+
+        # Allocate
+        latest_prices = get_latest_prices(df_u)
+
+        da = DiscreteAllocation(
+            cleaned_weights,
+            latest_prices,
+            total_portfolio_value=depo
+        )
+
+        allocation = da.lp_portfolio()[0]
+
+        # Put the stocks and the number of shares from the portfolio into a df
+        symbol_list = []
+        num_shares_list = []
+
+        for symbol, num_shares in allocation.items():
+            symbol_list.append(symbol)
+            num_shares_list.append(num_shares)
+
+        # Now that we have the stocks we want to buy we filter the df for those ones
+        df_buy = universe_df.universe.loc[universe_df.universe['symbol'].isin(symbol_list)]
+
+        # Filter for the period to get the closing price
+        df_buy = df_buy.loc[df_buy.index == max(df_buy.index)].sort_values(by='symbol')
+
+        # Add in the qty that was allocated to each stock
+        df_buy['qty'] = num_shares_list
+
+        # Calculate the amount we own for each stock
+        df_buy['amount_held'] = df_buy['Close'] * df_buy['qty']
+        df_buy = df_buy.loc[df_buy['qty'] != 0]
+        self.portfolio = df_buy.sort_values(by='amount_held')
+
+    def __str__(self):
+        #print(self.portfolio.to_markdown())
+        return tabulate(self.portfolio, headers='keys', tablefmt='grid')
+
+

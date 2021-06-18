@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from utils import ConfigLoader, LoadUniverse
+from utils import ConfigLoader, LoadUniverse, PortfolioCreater
 import argparse
 
 def create_portfolio(args, config):
@@ -9,9 +9,9 @@ def create_portfolio(args, config):
     :param args:
     :return: 0 - Ok, 1- Error
     """
-    #universe = LoadUniverse(config, args.universe, args.period)
-    #portfolio = CreatePortfolio(universe, args.type, args.period, args.return , args.depo)
-    #print(portfolio)
+    universe = LoadUniverse(config, args.universe, args.period)
+    portfolio = PortfolioCreater(universe, args.type, args.target_return, args.depo)
+    print(portfolio)
     pass
 
 def analyze_portfolio(args, config):
@@ -46,7 +46,7 @@ def main(config):
                        choices=['ru', 'em', 'us', 'cn', 'eu', 'all'],
                        help='universe of assets to analyze  (default: %(default)s)')
 
-    subparsers = parser.add_subparsers() # required=True
+    subparsers = parser.add_subparsers(required=True)
 
     # create subcommand
 
@@ -55,7 +55,7 @@ def main(config):
                                choices=['optimal', 'maxsharpe'],
                                default='optimal',
                                help='type of creating portfolio (default: %(default)s)) ')
-    parser_create.add_argument('-r','--return', type=float, default=0.2,
+    parser_create.add_argument('-r','--target_return', type=float, default=0.2,
                                help='expected return for \'Markowitz portfolio\' (default: %(default)s))',  metavar='X.XX')
 
     parser_create.add_argument('-p','--period', type=int, default=12,
@@ -85,16 +85,16 @@ def main(config):
 
     parser_describe.set_defaults(func=describe_)
 
-
+    #parser.parse_args('+f X ++bar Y'.split())
     args = parser.parse_args()
 
-    try:
-        args.func(args, config=config)
-    except AttributeError:
-        print( "usage: \n\tviportfolio [-h] {ru,em,us,cn,eu,all} {create,analyze,describe}\n\
-        (choose from 'create', 'analyze', 'describe')")
+    #try:
+    args.func(args, config=config)
+    #except AttributeError:
+    #    print( "usage: \n\tviportfolio [-h] {ru,em,us,cn,eu,all} {create,analyze,describe}\n\
+    #    (choose from 'create', 'analyze', 'describe')")
 
 
 if __name__ == "__main__":
-    ConfigLoader.write_config_example()
-    #main(ConfigLoader().config)
+    #ConfigLoader.write_config_example()
+    main(ConfigLoader().config)
