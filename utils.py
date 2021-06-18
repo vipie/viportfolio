@@ -8,7 +8,8 @@ import numpy as np
 from scipy import stats
 #import requests
 import time
-
+import glob
+import os
 from tabulate import tabulate
 
 from pandas_datareader.data import DataReader
@@ -86,18 +87,27 @@ class ConfigLoader:
         with open('config.json', 'w') as f:
             json.dump(data, f, indent=4, sort_keys=True)
 
+
 class LoadUniverse:
     """
-    Load data from web
+    Load data from web or cache
     """
+
     def __init__(self, config, universe_code, period):
 
         self.stocks = config['universe'][universe_code]['holdings'].keys()
 
         # Set up End and Start times for data grab
-        self.end = self.round_datetime(datetime.now())
+        self.end = self._round_datetime(datetime.now())
         self.start = self.end - relativedelta(months=period)
 
+        if self._is_cached():
+            self._load_from_cache()
+        else:
+            self._load_from_web()
+            self._cache_universe()
+
+    def _load_from_web(self):
         dfs = pd.DataFrame()
         # For loop for grabing yahoo finance data and setting as a dataframe
         for stock in self.stocks:
@@ -108,18 +118,53 @@ class LoadUniverse:
 
         self._universe = dfs
 
-    def round_datetime(self, dtme):
+    def _round_datetime(self, dtme):
         return datetime(dtme.year, dtme.month, dtme.day)
 
-    def cache_universe(self):
-        self._universe.to_pickle("{}__{}__{}__{}.pkl".format(hash(' '.join(sorted(self.stocks))) % 2 ** 30,
-                                             int(self.start.timestamp()), int(self.start.timestamp()),
-                                             int(self.round_datetime(datetime.now()).timestamp())))
+    def _cache_universe(self):
+        cache = self._get_cache()
+        hash_ = str(self._hash_tickers())
+
+        if hash_ in cache:
+            os.remove("cache__{}__{}__{}.pkl".format(hash_, int(cache[hash_][0].timestamp()),
+                                                     int(cache[hash_][1].timestamp())))
+
+        self._universe.to_pickle("cache__{}__{}__{}.pkl".format(self._hash_tickers(),
+                                                                int(self.start.timestamp()),
+                                                                int(self.end.timestamp())))
+
+    def _hash_tickers(self):
+        return hash(' '.join(sorted(self.stocks))) % 2 ** 30 # TODO set seed
 
     @property
     def universe(self):
-        # TODO cache on file
         return self._universe
+
+    def _is_cached(self):
+        cache = self._get_cache()
+        hash_ = str(self._hash_tickers())
+        return hash_ in cache and cache[hash_][0] <= self.start and cache[hash_][1] >= self.end
+
+    def _load_from_cache(self):
+        cache = self._get_cache()
+        hash_ = str(self._hash_tickers())
+        ds_ = pd.read_pickle("cache__{}__{}__{}.pkl".format(hash_,
+                                                            int(cache[hash_][0].timestamp()),
+                                                            int(cache[hash_][1].timestamp())))
+
+        self._universe = ds_[(ds_.index >= self.start) & (ds_.index <= self.end)]
+
+    def _get_cache(self):
+        """
+        @rtype: dict {hash: (datetime_start,datetime_end)}
+        """
+        ret_dict = dict()
+        cache_files = glob.glob('cache__*.pkl')
+        for _ in cache_files:
+            vals = _.split('__')
+            ret_dict[(vals[1])] = (datetime.fromtimestamp(int(vals[2])), datetime.fromtimestamp(int(vals[3][:-4])))
+
+        return ret_dict
 
 class PortfolioCreater:
 
