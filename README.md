@@ -1,12 +1,12 @@
 # viportfolio
 
 
-Required packages (avail via pip):
+Required packages (available via pip):
 
-cvxopt
-pandas-datareader	
-pyportfolioopt	
-tabulate
+- cvxopt
+- pandas-datareader	
+- pyportfolioopt	
+- tabulate
 
 Usage:
 # create max_sharpe ru-stocks portfolio
