@@ -92,21 +92,29 @@ class LoadUniverse:
     """
     def __init__(self, config, universe_code, period):
 
-        stocks = config['universe'][universe_code]['holdings'].keys()
+        self.stocks = config['universe'][universe_code]['holdings'].keys()
 
         # Set up End and Start times for data grab
-        end = datetime.utcnow()
-        start = end - relativedelta(months=period)
+        self.end = self.round_datetime(datetime.now())
+        self.start = self.end - relativedelta(months=period)
 
         dfs = pd.DataFrame()
         # For loop for grabing yahoo finance data and setting as a dataframe
-        for stock in stocks:
+        for stock in self.stocks:
             # Set DataFrame as the Stock Ticker
-            df_ = DataReader(stock, 'yahoo', start, end)
+            df_ = DataReader(stock, 'yahoo', self.start, self.end)
             df_["symbol"] = stock
             dfs = pd.concat([dfs, df_], axis=0)
 
         self._universe = dfs
+
+    def round_datetime(self, dtme):
+        return datetime(dtme.year, dtme.month, dtme.day)
+
+    def cache_universe(self):
+        self._universe.to_pickle("{}__{}__{}__{}.pkl".format(hash(' '.join(sorted(self.stocks))) % 2 ** 30,
+                                             int(self.start.timestamp()), int(self.start.timestamp()),
+                                             int(self.round_datetime(datetime.now()).timestamp())))
 
     @property
     def universe(self):
@@ -158,15 +166,21 @@ class PortfolioCreater:
         df_buy = universe_df.universe.loc[universe_df.universe['symbol'].isin(symbol_list)]
 
         # Filter for the period to get the closing price
-        df_buy = df_buy.loc[df_buy.index == max(df_buy.index)].sort_values(by='symbol')
+
+        max_dates = (df_buy.reset_index().groupby('symbol')).Date.agg(maxDate='max')
+        df_buy = df_buy.reset_index() \
+            .apply(lambda row: {'Company': row.symbol, "Close": row.Close, 'Date': row.Date} \
+            if row.Date == max_dates.loc[row.symbol, 'maxDate'] else None, axis=1)
+
+        df_buy = pd.DataFrame(list(df_buy.dropna())).sort_values(by='Company')
 
         # Add in the qty that was allocated to each stock
-        df_buy['qty'] = num_shares_list
+        df_buy['Quantity'] = num_shares_list
 
         # Calculate the amount we own for each stock
-        df_buy['amount_held'] = df_buy['Close'] * df_buy['qty']
-        df_buy = df_buy.loc[df_buy['qty'] != 0]
-        self.portfolio = df_buy.sort_values(by='amount_held')
+        df_buy['Amount'] = df_buy['Close'] * df_buy['Quantity']
+        df_buy = df_buy.loc[df_buy['Quantity'] != 0]
+        self.portfolio = df_buy.sort_values(by='Amount')
 
     def __str__(self):
         #print(self.portfolio.to_markdown())
