@@ -125,6 +125,7 @@ class PortfolioCreater:
 
     def __init__(self, universe_df, type, target_ret, depo):
         df_u = universe_df
+        self.depo = depo
 
         df_u = df_u.universe.pivot_table(
                                     index='Date',
@@ -180,10 +181,15 @@ class PortfolioCreater:
         # Calculate the amount we own for each stock
         df_buy['Amount'] = df_buy['Close'] * df_buy['Quantity']
         df_buy = df_buy.loc[df_buy['Quantity'] != 0]
+        df_buy['Percent'] = round(100*df_buy['Amount']/depo, 2)
         self.portfolio = df_buy.sort_values(by='Amount')
 
     def __str__(self):
         #print(self.portfolio.to_markdown())
-        return tabulate(self.portfolio, headers='keys', tablefmt='grid')
+        return tabulate(self.portfolio, headers='keys', tablefmt='grid') + \
+               "\n\nTotal usage {}% of depo ({})".format(round(self.portfolio['Percent'].sum(), 1),
+                                                        round(self.portfolio['Percent'].sum()/100 * self.depo, 2))
+
+
 
 
