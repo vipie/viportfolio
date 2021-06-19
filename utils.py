@@ -1,13 +1,6 @@
 import json
-# For time stamps
-from datetime import datetime
-#import cvxpy; cvxpy.installed_solvers()
 
 import pandas as pd
-import numpy as np
-from scipy import stats
-#import requests
-import time
 import glob
 import os
 from tabulate import tabulate
@@ -87,6 +80,18 @@ class ConfigLoader:
         with open('config.json', 'w') as f:
             json.dump(data, f, indent=4, sort_keys=True)
 
+def fnv64(data):
+    hash_ = 0xcbf29ce484222325
+    for b in data:
+        hash_ *= 0x100000001b3
+        hash_ &= 0xffffffffffffffff
+        hash_ ^= b
+    return hash_
+
+def fast_hash(dn, salt):
+    # Turn dn into bytes with a salt, dn is expected to be ascii data
+    data = salt.encode("ascii") + dn.encode("ascii")
+    return fnv64(data)
 
 class LoadUniverse:
     """
@@ -108,6 +113,7 @@ class LoadUniverse:
             self._cache_universe()
 
     def _load_from_web(self):
+        print("loading data from web")
         dfs = pd.DataFrame()
         # For loop for grabing yahoo finance data and setting as a dataframe
         for stock in self.stocks:
@@ -134,7 +140,7 @@ class LoadUniverse:
                                                                 int(self.end.timestamp())))
 
     def _hash_tickers(self):
-        return hash(' '.join(sorted(self.stocks))) % 2 ** 30 # TODO set seed
+        return fast_hash(' '.join(sorted(self.stocks)), 'dsb8jk21ijdidwdhjhj')
 
     @property
     def universe(self):
@@ -146,6 +152,7 @@ class LoadUniverse:
         return hash_ in cache and cache[hash_][0] <= self.start and cache[hash_][1] >= self.end
 
     def _load_from_cache(self):
+        print("loading data from cache")
         cache = self._get_cache()
         hash_ = str(self._hash_tickers())
         ds_ = pd.read_pickle("cache__{}__{}__{}.pkl".format(hash_,

@@ -85,8 +85,8 @@ def main(config):
 
     parser_describe.set_defaults(func=describe_)
 
-    #parser.parse_args('+f X ++bar Y'.split())
-    args = parser.parse_args('ru create -p 10'.split())
+    #' ru create -p 10'.split()
+    args = parser.parse_args()
 
     #try:
     args.func(args, config=config)
