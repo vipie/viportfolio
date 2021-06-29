@@ -50,7 +50,7 @@ def main(config):
                        choices=['ru', 'em', 'us', 'cn', 'eu', 'all'],
                        help='universe of assets to analyze  (default: %(default)s)')
 
-    subparsers = parser.add_subparsers(required=True)
+    subparsers = parser.add_subparsers(required=True, dest='cmd')
 
     # create subcommand
 
