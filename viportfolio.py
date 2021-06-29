@@ -59,7 +59,7 @@ def main(config):
                                choices=['optimal', 'maxsharpe'],
                                default='maxsharpe',
                                help='type of creating portfolio (default: %(default)s)) ')
-    parser_create.add_argument('-r','--target_return', type=float, default=0.2,
+    parser_create.add_argument('-r', '--target_return', type=float, default=0.2,
                                help='expected return for \'Markowitz portfolio\' (default: %(default)s))',  metavar='X.XX')
 
     parser_create.add_argument('-p','--period', type=int, default=12,
