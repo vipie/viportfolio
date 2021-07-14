@@ -1,4 +1,6 @@
 import json
+import re
+import pandas as pd
 
 class Config:
     def __init__(self):
@@ -80,11 +82,18 @@ def fast_hash(dn, salt):
     return fnv64(data)
 
 def r_(float):
-    # Turn dn into bytes with a salt, dn is expected to be ascii data
     return round(float, 2)
 
+def is_isin_code(isisin):
+    pattern = re.compile("([A-Z]{2})((?![A-Z]{10})[A-Z0-9]{10})")
+    return (isinstance(isisin, str) and len(isisin) == 12 and bool(pattern.search(isisin)))
 
-
+def get_df_from_ExcelFile(file_path):
+    '''
+    Return DataFrame from first sheet
+    '''
+    xl_file = pd.ExcelFile(file_path)
+    return [xl_file.parse(sheet_name) for sheet_name in xl_file.sheet_names][0]
 
 
 
