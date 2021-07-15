@@ -72,17 +72,15 @@ class Portfolio:
         df_buy['Quantity'] = num_shares_list
 
         # Calculate the amount we own for each stock
-        df_buy['Amount'] = df_buy['Close'] * df_buy['Quantity']
+        df_buy['Total in currency'] = df_buy['Close'] * df_buy['Quantity']
         df_buy = df_buy.loc[df_buy['Quantity'] != 0]
-        df_buy['Percent'] = r_(100 * df_buy['Amount'] / self.depo)
-        self.portfolio = df_buy.sort_values(by='Amount')
+        df_buy['Percent'] = r_(100 * df_buy['Total in currency'] / self.depo)
+        self.portfolio = df_buy.sort_values(by='Total in currency')
         self.portfolio_verbose = ef.portfolio_performance(verbose=True)
 
     def __str__(self):
         return tabulate(self.portfolio, headers='keys', tablefmt='grid') + \
-               "\n\nTotal usage {}% of depo ({}). \n expected return: {}, volatility: {}, Sharpe ratio: {} ". \
+               "\n\nTotal usage {}% of depo ({}). ". \
                    format(r_(self.portfolio['Percent'].sum()),
-                          r_(self.portfolio['Percent'].sum()/100 * self.depo),
-                          r_(self.portfolio_verbose[0]), r_(self.portfolio_verbose[1]),
-                          r_(self.portfolio_verbose[2])
+                          r_(self.portfolio['Percent'].sum()/100 * self.depo)
                           )

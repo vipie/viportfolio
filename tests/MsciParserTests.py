@@ -1,5 +1,7 @@
 import unittest
 from MsciParser import MsciParser
+import pandas as pd
+from datetime import datetime
 
 class MsciParserTestCase(unittest.TestCase):
     def setUp(self):

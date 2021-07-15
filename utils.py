@@ -13,12 +13,13 @@ class Config:
         Write config_example.json file for easy creation config.json
         :return:
         """
-        ru_funds = {'seb' : {'description': 'SEB Russia Fund',
+        ru_funds = {'seb': {'description': 'SEB Russia Fund',
                              'url': 'http://seb.se/pow/fmk/2500/csv/SEB_Russia_Fund_52990077SLDTU8UMXF91.csv'},
                     'franklin': {'description': 'Franklin FTSE Russia ETF',
                                 'url': 'https://www.franklintempleton.com/investor/investments-and-solutions/investment-options/etfs/portfolio/26356/franklin-ftse-russia-etf/FLRU?gwbid=gw.portfolio'},
                     'msci': {'description': 'MSCI Russia',
                     'url': 'https://app2.msci.com/eqb/custom_indexes/russia_performance.xls'}}
+
         ru_holdings = {'SBER.ME': 'Sberbank of Russia',
                        'GAZP.ME': 'Gazprom',
                        'SBERP.ME': 'Sberbank of Russia (Preferred)',

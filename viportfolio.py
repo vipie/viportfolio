@@ -3,6 +3,7 @@
 from utils import Config
 from portfolio import Portfolio
 from universe import Universe
+from MsciParser import MsciParser
 
 import argparse
 
@@ -25,8 +26,14 @@ def analyze_portfolio(args, config):
     :param args:  arguments for analyze portfolios
     :return: 0 - Ok, 1- Error
     """
-    print(args, config)
-    pass
+    parser = {
+        'msci': MsciParser
+        #'voya': VoyaParser,
+    }
+
+    url = (config['universe'][args.universe]['funds'][args.mutualfund]['url'])
+    parser = parser[args.mutualfund](url)
+    parser.pretty_print(args.depo)
 
 def describe_(args, config):
     """
@@ -78,7 +85,11 @@ def main(config):
                                 help='mutual funds to analyze',
                                 metavar='fund')
     parser_analyze.add_argument('-f','--file', nargs=2, help='files to analize',
-                                metavar=('fileXXX.csv','fileYYY.csv'))
+                                metavar=('fileXXX.csv', 'fileYYY.csv'))
+
+    parser_analyze.add_argument('-d','--depo', type=float, default=None,  metavar='XXX',
+                                help='deposit value (default: %(default)s))')
+
     parser_analyze.add_argument('-p','--period', type=int, default=1,
                                 help='period fo analize in months (default: %(default)s)',
                                  metavar='X')

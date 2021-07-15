@@ -1,18 +1,33 @@
-from AbstractParser import AbstractParser
+from BaseParser import BaseParser
 from utils import *
+from datetime import datetime
+import math
 
-class MsciParser(AbstractParser):
+class MsciParser(BaseParser):
 
     def __init__(self, file_path):
-        self.start_index = self.end_index = self.columns = None
+        '''
+        :param file_path: Path to mutual fund report file
+        in this method we handle all rows in DataFrame using chain of responsibility.
+        You can similarly define your conditions as handler classes in heirs of BaseParser class.
+        This method must create:
+        - DataFrame with parsed data in self.parsed_data,
+        - datetime of report in self.date
+        - name of mutual fund in self.name
+        IMPORTANT: condition in Handlers must not intersect
+        '''
+
         self.df = get_df_from_ExcelFile(file_path)
 
         # create of chain of responsibility
-        self.handlers = MsciParser.HandleHeaderAndStartBody(
-            MsciParser.HandleEndBody(
-                MsciParser.HandleNameAndDate(
-                    MsciParser.HandleBody(
-                        MsciParser.NullHandler()))))
+
+        self.handlers = self.HandleHeaderAndStartBody(
+                            self.HandleEndBody(
+                                self.HandleNameAndDate(
+                                    self.HandleBody(
+                                        self.NullHandler()))))
+
+        self.start_index = self.end_index = self.columns = None
 
         for index, row in self.df.iterrows():
             self.handlers.handle(self, row, index)

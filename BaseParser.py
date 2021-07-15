@@ -1,7 +1,7 @@
 from tabulate import tabulate
 from utils import *
 
-class AbstractParser:
+class BaseParser:
     def __init__(self):
         raise NotImplementedError
 
@@ -9,9 +9,9 @@ class AbstractParser:
         print_df = self.parsed_data.loc[:, ['Name', 'Code', 'Weight']]
 
         if deposit is not None:
-            print_df['Deposit'] = (deposit / 100) * print_df.Weight
+            print_df['Total in currency'] = (deposit / 100) * print_df.Weight
 
-        print(tabulate(print_df, headers='keys', tablefmt='psql'))
+        print(tabulate(print_df, headers='keys', tablefmt='grid'))
 
     def compare(self, parser):
         raise NotImplementedError
