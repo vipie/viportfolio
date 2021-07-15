@@ -24,8 +24,7 @@ class MsciParser(BaseParser):
         self.handlers = self.HandleHeaderAndStartBody(
                             self.HandleEndBody(
                                 self.HandleNameAndDate(
-                                    self.HandleBody(
-                                        self.NullHandler()))))
+                                        self.NullHandler())))
 
         self.start_index = self.end_index = self.columns = None
 
@@ -79,16 +78,6 @@ class MsciParser(BaseParser):
         def handle(self, parser, row, index):
             if 'Sector Weights for' in str(row[0]) and math.isnan(row[1]):
                 parser.end_index = (index - 1, 0)
-            else:
-                super().handle(parser, row, index)
-
-    class HandleBody(NullHandler):
-        '''
-        Create parsed DataFrame from "body"
-        '''
-
-        def handle(self, parser, row, index):
-            if parser.start_index is not None and parser.end_index is not None and parser.columns is not None:
                 parser.parsed_data = parser.df.iloc[parser.start_index[0]:parser.end_index[0], :].dropna(how='all')
                 parser.parsed_data.columns = parser.columns
                 parser.parsed_data = parser.parsed_data.reset_index(drop=True)

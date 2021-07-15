@@ -72,10 +72,10 @@ class Portfolio:
         df_buy['Quantity'] = num_shares_list
 
         # Calculate the amount we own for each stock
-        df_buy['Total in currency'] = df_buy['Close'] * df_buy['Quantity']
+        df_buy['Asset value'] = df_buy['Close'] * df_buy['Quantity']
         df_buy = df_buy.loc[df_buy['Quantity'] != 0]
-        df_buy['Percent'] = r_(100 * df_buy['Total in currency'] / self.depo)
-        self.portfolio = df_buy.sort_values(by='Total in currency')
+        df_buy['Percent'] = r_(100 * df_buy['Asset value'] / self.depo)
+        self.portfolio = df_buy.sort_values(by='Asset value',  ascending=False)
         self.portfolio_verbose = ef.portfolio_performance(verbose=True)
 
     def __str__(self):

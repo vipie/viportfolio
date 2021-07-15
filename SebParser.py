@@ -1,8 +1,8 @@
-import re
+from BaseParser import BaseParser
+from utils import *
+from datetime import datetime
 
-def is_isin_code(isisin):
-    pattern = re.compile("([A-Z]{2})((?![A-Z]{10})[A-Z0-9]{10})")
-    return (isinstance(isisin, str) and len(isisin) == 12 and bool(pattern.search(isisin)))
+import requests, io
 
 
 class SebParser(BaseParser):
@@ -19,7 +19,8 @@ class SebParser(BaseParser):
         IMPORTANT: condition in Handlers must not intersect
         '''
 
-        self.df = pd.read_csv(file_path, delimiter=';', header=None)
+        r = requests.get(file_path, allow_redirects=True)
+        self.df = pd.read_csv(io.BytesIO(r.content), delimiter=';', header=None)
 
         # create of chain of responsibility
 

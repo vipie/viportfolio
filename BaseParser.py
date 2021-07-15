@@ -9,8 +9,9 @@ class BaseParser:
         print_df = self.parsed_data.loc[:, ['Name', 'Code', 'Weight']]
 
         if deposit is not None:
-            print_df['Total in currency'] = (deposit / 100) * print_df.Weight
+            print_df['Asset value'] = (deposit / 100) * print_df.Weight
 
+        print_df = print_df.sort_values(by='Weight', ascending=False)
         print(tabulate(print_df, headers='keys', tablefmt='grid'))
 
     def compare(self, parser):

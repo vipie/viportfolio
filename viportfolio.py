@@ -4,6 +4,7 @@ from utils import Config
 from portfolio import Portfolio
 from universe import Universe
 from MsciParser import MsciParser
+from SebParser import SebParser
 
 import argparse
 
@@ -27,8 +28,8 @@ def analyze_portfolio(args, config):
     :return: 0 - Ok, 1- Error
     """
     parser = {
-        'msci': MsciParser
-        #'voya': VoyaParser,
+        'msci': MsciParser,
+        'seb': SebParser
     }
 
     url = (config['universe'][args.universe]['funds'][args.mutualfund]['url'])
