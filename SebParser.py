@@ -82,7 +82,7 @@ class SebParser(BaseParser):
         def handle(self, parser, row, index):
             if is_isin_code(row[0]) and index == parser.df.shape[0] - 1:
                 parser.end_index = (index, 0)
-                parser.parsed_data = parser.df.iloc[parser.start_index[0]:parser.end_index[0], :].dropna(how='all')
+                parser.parsed_data = parser.df.iloc[parser.start_index[0]:parser.end_index[0] + 1, :].dropna(how='all')
                 parser.parsed_data.columns = parser.columns
                 parser.parsed_data = parser.parsed_data.reset_index(drop=True)
                 parser.parsed_data.Weight = parser.parsed_data.Weight.map(lambda x: float(x) * 100)

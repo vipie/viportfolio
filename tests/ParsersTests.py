@@ -43,8 +43,5 @@ class SebParserTestCase(unittest.TestCase, ParserTests):
         def setUp(self):
             self.parser = SebParser('https://seb.se/pow/fmk/2500/csv/SEB_Russia_Fund_52990077SLDTU8UMXF91.csv')
 
-        def test_parser_weight_sum(self):
-            self.assertGreater(self.parser.parsed_data.Weight.sum(), 90)
-
 if __name__ == '__main__':
     unittest.main()
