@@ -4,7 +4,6 @@ from datetime import datetime
 
 import requests, io
 
-
 class SebParser(BaseParser):
 
     def __init__(self, file_path):
@@ -16,7 +15,7 @@ class SebParser(BaseParser):
         - DataFrame with parsed data in self.parsed_data,
         - datetime of report in self.date
         - name of mutual fund in self.name
-        IMPORTANT: condition in Handlers must not intersect
+        IMPORTANT: condition in Handlers may intersect, but need to call next handler
         '''
 
         r = requests.get(file_path, allow_redirects=True)
