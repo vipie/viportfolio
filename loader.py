@@ -6,6 +6,7 @@ from utils import *
 from pandas_datareader.data import DataReader
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+import requests, io
 
 def hash_tickers(stocks):
     return fast_hash(' '.join(sorted(stocks)), 'dsb8jk21ijdidwdhjhj')
@@ -14,6 +15,21 @@ def round_datetime(dtme):
     return datetime(dtme.year, dtme.month, dtme.day)
 
 class BaseLoader():
+
+    def __init__(self, url):
+        self.url = url
+
+    def load(self):
+        if self.url[-4::1] =='.csv':
+            return requests.get(self.url, allow_redirects=True).text
+
+        if self.url[-4::1] =='.xls':
+            return get_df_from_ExcelFile(self.url).to_csv(None, sep=';', encoding='utf-8')
+
+        # TODO: update config
+        if 'FLRU?gwbid=gw.portfolio' in self.url:
+            return get_df_from_ExcelFile(self.url).to_csv(None, sep=';', encoding='utf-8')
+
 
     @property
     def data(self):
@@ -37,7 +53,6 @@ class BaseLoader():
 
     def get_cache_info(self):
         pass
-
 
 class UniverseLoader(BaseLoader):
 

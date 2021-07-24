@@ -1,85 +1,31 @@
 from BaseParser import BaseParser
 from utils import *
 from datetime import datetime
+import io
+import numpy as np
+
+
 import math
 
 class MsciParser(BaseParser):
 
-    def __init__(self, file_path):
+    def __init__(self, file_loader):
         '''
-        :param file_path: Path to mutual fund report file
-        in this method we handle all rows in DataFrame using chain of responsibility.
-        You can similarly define your conditions as handler classes in heirs of BaseParser class.
-        This method must create:
-        - DataFrame with parsed data in self.parsed_data,
-        - datetime of report in self.date
-        - name of mutual fund in self.name
-        IMPORTANT: condition in Handlers must not intersect
+        :param file_loader: instance of BaseLoader class
         '''
 
-        self.df = get_df_from_ExcelFile(file_path)
+        regex = r';([\w\s]*);.*;Closing Index Information as of \w*, (\w* \d{1,2}, \d{4});.*;' \
+                r'(MSCI Code;Security Name;Price;.*);Sector Weights for.*'
 
-        # create of chain of responsibility
+        m = re.match(regex, file_loader.load(), re.DOTALL)
+        self.name = m.group(1)  # MSCI Russia
+        self.date = datetime.strptime(m.group(2), '%B %d, %Y')  # June 30, 2021
 
-        self.handlers = self.HandleHeaderAndStartBody(
-                            self.HandleEndBody(
-                                self.HandleNameAndDate(
-                                        self.NullHandler())))
+        self.parsed_data = pd.read_csv(io.StringIO(m.group(3)), header=0, delimiter=';').dropna(how='all')
+        self.parsed_data.rename(columns={'Security Name': 'Name',
+                                         'Weight%': 'Weight', 'Reuters Code (RIC)': 'Code'},
+                                inplace=True)
 
-        self.start_index = self.end_index = self.columns = None
-
-        for index, row in self.df.iterrows():
-            self.handlers.handle(self, row, index)
-
-    class NullHandler:
-        '''
-        Null hanhdler for chain of responsibility implementation
-        '''
-
-        def __init__(self, successor=None):
-            self.__successor = successor
-
-        def handle(self, parser, row, index):
-            if self.__successor is not None:
-                self.__successor.handle(parser, row, index)
-
-    class HandleNameAndDate(NullHandler):
-        '''
-        Find and initialize date and name of mutual fund
-        '''
-
-        def handle(self, parser, row, index):
-            if row[0] == 'Date' and row[1] == 'Index Name':
-                parser.date = datetime.strptime(parser.df.iloc[index + 1, 0], '%Y-%m-%d')
-                parser.name = parser.df.iloc[index + 1, 1]
-            else:
-                super().handle(parser, row, index)
-
-    class HandleHeaderAndStartBody(NullHandler):
-        '''
-        Find and initialize header and start index of "body"
-        '''
-
-        def handle(self, parser, row, index):
-            if row[0] == 'MSCI Code' and row[1] == 'Security Name':
-                parser.start_index = (index + 1, 0)
-                parser.columns = parser.df.iloc[index: index + 1, :].values.flatten().tolist()
-                parser.columns[1] = 'Name'
-                parser.columns[5] = 'Weight'
-                parser.columns[10] = 'Code'
-            else:
-                super().handle(parser, row, index)
-
-    class HandleEndBody(NullHandler):
-        '''
-        Find end index of "body"
-        '''
-
-        def handle(self, parser, row, index):
-            if 'Sector Weights for' in str(row[0]) and math.isnan(row[1]):
-                parser.end_index = (index - 1, 0)
-                parser.parsed_data = parser.df.iloc[parser.start_index[0]:parser.end_index[0], :].dropna(how='all')
-                parser.parsed_data.columns = parser.columns
-                parser.parsed_data = parser.parsed_data.reset_index(drop=True)
-            else:
-                super().handle(parser, row, index)
+        self.parsed_data["ISIN"] = np.nan
+        self.parsed_data = self.parsed_data.sort_values(by='Weight', ascending=False)
+        self.parsed_data = self.parsed_data.reset_index(drop=True)

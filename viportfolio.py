@@ -5,6 +5,9 @@ from portfolio import Portfolio
 from universe import Universe
 from MsciParser import MsciParser
 from SebParser import SebParser
+from loader import BaseLoader
+from voya import VoyaParser
+from franklin import FranklinParser
 
 import argparse
 
@@ -29,11 +32,13 @@ def analyze_portfolio(args, config):
     """
     parser = {
         'msci': MsciParser,
-        'seb': SebParser
+        'seb': SebParser,
+        'voya': VoyaParser,
+        'franklin': FranklinParser
     }
 
     url = (config['universe'][args.universe]['funds'][args.mutualfund]['url'])
-    parser = parser[args.mutualfund](url)
+    parser = parser[args.mutualfund](BaseLoader(url))
     parser.pretty_print(args.depo)
 
 def describe_(args, config):

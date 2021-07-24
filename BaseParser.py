@@ -6,12 +6,13 @@ class BaseParser:
         raise NotImplementedError
 
     def pretty_print(self, deposit=None):
-        print_df = self.parsed_data.loc[:, ['Name', 'Code', 'Weight']]
+        print_df = self.parsed_data.loc[:, ['Name', 'Code', 'ISIN', 'Weight']]
+        print(self.name + " assets on " + self.date.strftime("%Y-%m-%d"))
 
         if deposit is not None:
             print_df['Asset value'] = (deposit / 100) * print_df.Weight
 
-        print_df = print_df.sort_values(by='Weight', ascending=False)
+        print_df = print_df.sort_values(by='Weight', ascending=False).dropna(axis='columns', how='all')
         print(tabulate(print_df, headers='keys', tablefmt='grid'))
 
     def compare(self, parser):
