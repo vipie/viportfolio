@@ -6,18 +6,22 @@
             "funds": {
                 "franklin": {
                     "description": "Franklin FTSE Russia ETF",
+                    "type": "xls",
                     "url": "https://www.franklintempleton.com/investor/investments-and-solutions/investment-options/etfs/portfolio/26356/franklin-ftse-russia-etf/FLRU?gwbid=gw.portfolio"
                 },
                 "msci": {
                     "description": "MSCI Russia",
+                    "type": "xls",
                     "url": "https://app2.msci.com/eqb/custom_indexes/russia_performance.xls"
                 },
                 "seb": {
                     "description": "SEB Russia Fund",
+                    "type": "csv",
                     "url": "https://seb.se/pow/fmk/2500/csv/SEB_Russia_Fund_52990077SLDTU8UMXF91.csv"
                 },
                 "voya": {
                     "description": "Voya Russia fund",
+                    "type": "xls",
                     "url": "https://individuals.voya.com/document/holdings/voya-russia-fund-monthly-holdings-xls.xls"
                 }
             },

@@ -14,22 +14,22 @@ def hash_tickers(stocks):
 def round_datetime(dtme):
     return datetime(dtme.year, dtme.month, dtme.day)
 
-class BaseLoader():
+class Loader():
 
-    def __init__(self, url):
+    def __init__(self, url, report_type):
         self.url = url
+        self.report_type = report_type
 
     def load(self):
-        if self.url[-4::1] =='.csv':
-            return requests.get(self.url, allow_redirects=True).text
 
-        if self.url[-4::1] =='.xls':
-            return get_df_from_ExcelFile(self.url).to_csv(None, sep=';', encoding='utf-8')
+        handlers = {
+            'csv': self.HandleCsv,
+            'xls': self.HandleXls,
+            'pdf': self.HandlePdf,
+            'txt': self.HandleTxt
+        }
 
-        # TODO: update config
-        if 'FLRU?gwbid=gw.portfolio' in self.url:
-            return get_df_from_ExcelFile(self.url).to_csv(None, sep=';', encoding='utf-8')
-
+        return handlers[self.report_type]()
 
     @property
     def data(self):
@@ -54,7 +54,20 @@ class BaseLoader():
     def get_cache_info(self):
         pass
 
-class UniverseLoader(BaseLoader):
+    def HandleCsv(self):
+        return requests.get(self.url, allow_redirects=True).text
+
+    def HandleXls(self):
+        return get_df_from_ExcelFile(self.url).to_csv(None, sep=';', encoding='utf-8')
+
+    def HandlePdf(self):
+        pass
+
+    def HandleTxt(self):
+        pass
+
+
+class UniverseLoader(Loader):
 
     def __init__(self, config, universe_code, period):
 

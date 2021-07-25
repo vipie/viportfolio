@@ -3,12 +3,12 @@ from datetime import datetime
 
 import numpy as np
 
-from BaseParser import BaseParser
+from parsers.base_parser import BaseParser
 from utils import *
 
 class FranklinParser(BaseParser):
 
-    def __init__(self, file_loader):
+    def parse(self, file_loader):
         '''
         :param file_loader: instance of BaseLoader class
         '''
@@ -24,6 +24,3 @@ class FranklinParser(BaseParser):
         self.parsed_data.rename(columns={'SECURITY NAME': 'Name', 'WEIGHT (%)': 'Weight',
                                          'SECURITY IDENTIFIER': 'Code'},
                                 inplace=True)
-
-        self.parsed_data = self.parsed_data.sort_values(by='Weight', ascending=False)
-        self.parsed_data = self.parsed_data.reset_index(drop=True)

@@ -15,9 +15,9 @@ class Universe:
     Create universe
     """
 
-    def __init__(self, config, universe_code, period):
+    def __init__(self, stocks, period):
 
-        self.stocks = config['universe'][universe_code]['holdings'].keys()
+        self.stocks = stocks
 
         # Set up End and Start times for data grab
         self.end = self._round_datetime(datetime.now())

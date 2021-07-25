@@ -3,11 +3,12 @@
 from utils import Config
 from portfolio import Portfolio
 from universe import Universe
-from MsciParser import MsciParser
-from SebParser import SebParser
-from loader import BaseLoader
-from voya import VoyaParser
-from franklin import FranklinParser
+from loader import Loader
+
+from parsers.voya import VoyaParser
+from parsers.franklin import FranklinParser
+from parsers.msci import MsciParser
+from parsers.seb import SebParser
 
 import argparse
 
@@ -18,7 +19,8 @@ def create_portfolio(args, config):
     :param args:
     :return: 0 - Ok, 1- Error
     """
-    universe = Universe(config, args.universe, args.period)
+    stocks = config['universe'][args.universe]['holdings'].keys()
+    universe = Universe(stocks, args.period)
     portfolio = Portfolio(universe, args.type, args.target_return, args.depo)
     print(portfolio)
     pass
@@ -38,7 +40,9 @@ def analyze_portfolio(args, config):
     }
 
     url = (config['universe'][args.universe]['funds'][args.mutualfund]['url'])
-    parser = parser[args.mutualfund](BaseLoader(url))
+    report_type = (config['universe'][args.universe]['funds'][args.mutualfund]['type'])
+
+    parser = parser[args.mutualfund](Loader(url, report_type))
     parser.pretty_print(args.depo)
 
 def describe_(args, config):

@@ -1,4 +1,4 @@
-from BaseParser import BaseParser
+from parsers.base_parser import BaseParser
 from utils import *
 from datetime import datetime
 import io
@@ -9,7 +9,7 @@ import math
 
 class MsciParser(BaseParser):
 
-    def __init__(self, file_loader):
+    def parse(self, file_loader):
         '''
         :param file_loader: instance of BaseLoader class
         '''
@@ -27,5 +27,3 @@ class MsciParser(BaseParser):
                                 inplace=True)
 
         self.parsed_data["ISIN"] = np.nan
-        self.parsed_data = self.parsed_data.sort_values(by='Weight', ascending=False)
-        self.parsed_data = self.parsed_data.reset_index(drop=True)

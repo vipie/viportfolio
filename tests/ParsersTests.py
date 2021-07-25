@@ -1,11 +1,11 @@
 import unittest
-from MsciParser import MsciParser
+from parsers.msci import MsciParser
 import pandas as pd
 from datetime import datetime
-from SebParser import SebParser
-from voya import VoyaParser
-from loader import BaseLoader
-from franklin import FranklinParser
+from parsers.seb import SebParser
+from parsers.voya import VoyaParser
+from loader import Loader
+from parsers.franklin import FranklinParser
 
 class ParserTests():
 
@@ -38,22 +38,23 @@ class ParserTests():
 
 class MsciParserTestCase(unittest.TestCase, ParserTests):
     def setUp(self):
-        self.parser = MsciParser(BaseLoader('https://app2.msci.com/eqb/custom_indexes/russia_performance.xls'))
+        self.parser = MsciParser(Loader('https://app2.msci.com/eqb/custom_indexes/russia_performance.xls','xls'))
 
 class SebParserTestCase(unittest.TestCase, ParserTests):
         def setUp(self):
-            self.parser = SebParser(BaseLoader('https://seb.se/pow/fmk/2500/csv/SEB_Russia_Fund_52990077SLDTU8UMXF91.csv'))
+            self.parser = SebParser(Loader('https://seb.se/pow/fmk/2500/csv/SEB_Russia_Fund_52990077SLDTU8UMXF91.csv',
+                                           'csv'))
 
 class VoyaParserTestCase(unittest.TestCase, ParserTests):
     def setUp(self):
-        self.parser = VoyaParser(BaseLoader("https://individuals.voya.com/document/holdings/voya-russia-fund-monthly-holdings"
-                                 "-xls.xls"))
+        self.parser = VoyaParser(Loader("https://individuals.voya.com/document/holdings/voya-russia-fund-monthly-holdings"
+                                 "-xls.xls",'xls'))
 
 class FranklinParserTestCase(unittest.TestCase, ParserTests):
     def setUp(self):
-        self.parser = FranklinParser(BaseLoader("https://www.franklintempleton.com/investor/investments-and-solutions"
+        self.parser = FranklinParser(Loader("https://www.franklintempleton.com/investor/investments-and-solutions"
                                             "/investment-options/etfs/portfolio/26356/franklin-ftse-russia-etf/FLRU"
-                                            "?gwbid=gw.portfolio"))
+                                            "?gwbid=gw.portfolio",'xls'))
 
 if __name__ == '__main__':
     unittest.main()

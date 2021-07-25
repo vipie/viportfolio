@@ -3,12 +3,12 @@ from datetime import datetime
 
 import numpy as np
 
-from BaseParser import BaseParser
+from parsers.base_parser import BaseParser
 from utils import *
 
 class VoyaParser(BaseParser):
 
-    def __init__(self, file_loader):
+    def parse(self, file_loader):
         '''
         :param file_loader: instance of BaseLoader class
         '''
@@ -26,5 +26,3 @@ class VoyaParser(BaseParser):
 
         self.parsed_data["ISIN"] = np.nan
         self.parsed_data["Weight"] = self.parsed_data['Market Value'] * 100 / (self.parsed_data['Market Value'].sum())
-        self.parsed_data = self.parsed_data.sort_values(by='Weight', ascending=False)
-        self.parsed_data = self.parsed_data.reset_index(drop=True)

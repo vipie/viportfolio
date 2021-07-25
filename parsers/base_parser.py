@@ -2,8 +2,10 @@ from tabulate import tabulate
 from utils import *
 
 class BaseParser:
-    def __init__(self):
-        raise NotImplementedError
+    def __init__(self, file_loader):
+        self.parse(file_loader)
+        self.parsed_data = self.parsed_data.sort_values(by='Weight', ascending=False)
+        self.parsed_data = self.parsed_data.reset_index(drop=True)
 
     def pretty_print(self, deposit=None):
         print_df = self.parsed_data.loc[:, ['Name', 'Code', 'ISIN', 'Weight']]
@@ -30,5 +32,10 @@ class BaseParser:
 
     def get_info_by_isin(self):
         raise NotImplementedError
+
+    def parse(self, file_loader):
+        raise NotImplementedError
+
+
 
 
