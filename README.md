@@ -20,11 +20,12 @@ available funds:
 
 | Fund name   | Fund code |
 | ----------- | ----------- |
-| SEB Russia Fund      | seb       |
 |  Voya Russia Fund   | voya        |
 |  MSCI Russia Fund   | msci        |
 |  UBS Equity Russia   | ubs     |
 |  Franklin FTSE Russia ETF   | franklin   |
+| SEB Eastern Europe Small and Mid Cap Fund (Russia part)      | seb       |
+| SEB Russia Fund (after 2021-05-31 merged into "SEB Eastern Europe Small and Mid Cap Fund")     | seb_old      |
 
 edit config file
 - nano ./config.json

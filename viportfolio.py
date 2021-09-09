@@ -8,7 +8,7 @@ from loader import Loader
 from parsers.voya import VoyaParser
 from parsers.franklin import FranklinParser
 from parsers.msci import MsciParser
-from parsers.seb import SebParser
+from parsers.seb import SebParser, SebOldParser
 from parsers.ubs import UbsParser
 
 import argparse
@@ -36,6 +36,7 @@ def analyze_portfolio(args, config):
     parser = {
         'msci': MsciParser,
         'seb': SebParser,
+        'seb_old': SebOldParser,
         'voya': VoyaParser,
         'franklin': FranklinParser,
         'ubs': UbsParser
