@@ -1,6 +1,7 @@
 import json
 import re
 import pandas as pd
+import requests
 
 class Config:
     def __init__(self):
@@ -97,6 +98,12 @@ def get_df_from_ExcelFile(file_path):
     '''
     xl_file = pd.ExcelFile(file_path)
     return [xl_file.parse(sheet_name) for sheet_name in xl_file.sheet_names][0]
+
+def download(url, filename):
+    r = requests.get(url, stream=True)
+    with open(filename, 'wb') as fd:
+        for chunk in r.iter_content():
+            fd.write(chunk)
 
 
 

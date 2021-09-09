@@ -5,6 +5,9 @@ RUN pip install cvxpy
 RUN pip install pandas-datareader
 RUN pip install pyportfolioopt
 RUN pip install tabulate
+RUN pip install tabulate
+RUN pip install textract
+
 RUN apt-get update && apt-get install -y nano
 
 COPY . /home

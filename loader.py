@@ -7,6 +7,9 @@ from pandas_datareader.data import DataReader
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import requests, io
+from urllib.parse import urlparse
+import textract
+
 
 def hash_tickers(stocks):
     return fast_hash(' '.join(sorted(stocks)), 'dsb8jk21ijdidwdhjhj')
@@ -61,7 +64,10 @@ class Loader():
         return get_df_from_ExcelFile(self.url).to_csv(None, sep=';', encoding='utf-8')
 
     def HandlePdf(self):
-        pass
+        a = urlparse(self.url)
+        filename = os.path.basename(a.path)
+        download(self.url, filename)
+        return textract.process(filename).decode("utf8")
 
     def HandleTxt(self):
         pass
