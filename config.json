@@ -23,6 +23,11 @@
                     "description": "Voya Russia fund",
                     "type": "xls",
                     "url": "https://individuals.voya.com/document/holdings/voya-russia-fund-monthly-holdings-xls.xls"
+                },
+                "ubs": {
+                    "description": "UBS Equity Russia",
+                    "type": "pdf",
+                    "url": "https://www.ubs.com/2/e/files/RET/FS_RET_LU0246274897_LU_EN.pdf"
                 }
             },
             "holdings": {

@@ -6,6 +6,7 @@ from parsers.seb import SebParser
 from parsers.voya import VoyaParser
 from loader import Loader
 from parsers.franklin import FranklinParser
+from parsers.ubs import UbsParser
 
 class ParserTests():
 
@@ -55,6 +56,14 @@ class FranklinParserTestCase(unittest.TestCase, ParserTests):
         self.parser = FranklinParser(Loader("https://www.franklintempleton.com/investor/investments-and-solutions"
                                             "/investment-options/etfs/portfolio/26356/franklin-ftse-russia-etf/FLRU"
                                             "?gwbid=gw.portfolio",'xls'))
+
+class UbsParserTestCase(unittest.TestCase, ParserTests):
+    def setUp(self):
+        self.parser = UbsParser(Loader("https://www.ubs.com/2/e/files/RET/FS_RET_LU0246274897_LU_EN.pdf",'pdf'))
+
+    def test_parser_weight_sum(self):
+        self.assertGreater(self.parser.parsed_data.Weight.sum(), 30)
+
 
 if __name__ == '__main__':
     unittest.main()

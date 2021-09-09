@@ -9,6 +9,7 @@ from parsers.voya import VoyaParser
 from parsers.franklin import FranklinParser
 from parsers.msci import MsciParser
 from parsers.seb import SebParser
+from parsers.ubs import UbsParser
 
 import argparse
 
@@ -36,7 +37,8 @@ def analyze_portfolio(args, config):
         'msci': MsciParser,
         'seb': SebParser,
         'voya': VoyaParser,
-        'franklin': FranklinParser
+        'franklin': FranklinParser,
+        'ubs': UbsParser
     }
 
     url = (config['universe'][args.universe]['funds'][args.mutualfund]['url'])
