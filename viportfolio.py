@@ -44,9 +44,11 @@ def analyze_portfolio(args, config):
 
     url = (config['universe'][args.universe]['funds'][args.mutualfund]['url'])
     report_type = (config['universe'][args.universe]['funds'][args.mutualfund]['type'])
+    aliases = (config['aliases'])
 
-    parser = parser[args.mutualfund](Loader(url, report_type))
-    parser.pretty_print(args.depo)
+    parser = parser[args.mutualfund](Loader(url, report_type), aliases)
+    #parser.pretty_print(args.depo)
+    parser.print_db_report(args.depo)
 
 def describe_(args, config):
     """

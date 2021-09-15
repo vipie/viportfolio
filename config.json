@@ -77,25 +77,45 @@
                 "UPRO.ME": "Unipro",
                 "VTBR.ME": "VTB Bank",
                 "YNDX.ME": "Yandex"
-            },
-            "aliases": {
-                "Yandex NV-A"               			: "Yandex NV-A",
+            }
+
+        }
+    },
+    "aliases": {
+                "Gazprom PJSC"               			: "Gazprom",
+                "Yandex NV-A"               			: "Yandex NV",
+                "Yandex NV"               			: "Yandex NV",
                 "Sberbank"								: "Sberbank",
+                "Sberbank PAO"								: "Sberbank",
+                "Sberbank of Russia PJSC"						: "Sberbank",
+                "Sberbank of Russia"						: "Sberbank",
+
+                "Sberbank Preferred"                  	: "Sberbank Preferred",
+
                 "Sistema JSFC"             				: "Sistema JSFC",
                 "Mobile Telesystems (RUS)" 				: "Mobile Telesystems (RUS)",
                 "Magnit"                   				: "Magnit",
+                "Magnit OJSC"                   				: "Magnit",
                 "Mail.ru Group GDR"        				: "Mail.ru Group GDR",
                 "Polymetal International RUB"         	: "Polymetal International RUB",
                 "Moscow Exchange MICEX"               	: "Moscow Exchange",
                 "TCS Group Holding GDR"              	: "TCS Group Holding",
                 "MMC Norilsk Nickel"                  	: "MMC Norilsk Nickel",
+                "MMC Norilsk Nickel OJSC"                  	: "MMC Norilsk Nickel",
+
+
                 "Ozon Holding - ADR RUB"              	: "Ozon Holding",
                 "Magnitogorsk Iron&Steel Works Russia"	: "Magnitogorsk Iron&Steel Works Russia",
+
                 "Phosagro GDR"                        	: "Phosagro",
+                "PhosAgro PJSC"                        	: "Phosagro",
+
                 "X 5 Retail Group GDR (RUB)"          	: "X 5 Retail Group",
                 "X 5 Retail Group GDR"                	: "X 5 Retail Group",
-                "Sberbank Preferred"                  	: "Sberbank Preferred",
+                "X5 Retail Group NV"                	: "X 5 Retail Group",
+
                 "Alrosa"                              	: "Alrosa",
+                "Alrosa PJSC"                              	: "Alrosa",
                 "Headhunter Group ADR"                	: "Headhunter Group",
                 "SEGEZHA GROUP PJSC"                  	: "Segezha Group PJSC",
                 "RusHydro" 							: "RusHydro",
@@ -103,6 +123,8 @@
                 "Novolipetsk Iron and Steel" 		: "Novolipetsk Iron and Steel",
                 "LSR Group"                  		: "LSR Group",
                 "VTB Bank Ryssland MICEX"    		: "VTB Bank",
+                "VTB Bank PJSC"    		: "VTB Bank",
+
                 "Bank St Petersburg"         		: "Bank St Petersburg",
                 "Qiwi"                       : "Qiwi",
                 "VEON-ADR"                   : "VEON",
@@ -115,6 +137,4 @@
                 "Obuv Rossii"                : "Obuv Rossii",
                 "Polyus (RUS)"               : "Polyus (RUS)"
             }
-        }
-    }
 }
