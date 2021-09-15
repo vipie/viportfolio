@@ -14,12 +14,12 @@
                     "type": "xls",
                     "url": "https://app2.msci.com/eqb/custom_indexes/russia_performance.xls"
                 },
-                "seb_old": {
+                "seb": {
                     "description": "SEB Russia Fund",
                     "type": "csv",
                     "url": "https://seb.se/pow/fmk/2500/csv/SEB_Russia_Fund_52990077SLDTU8UMXF91.csv"
                 },
-                "seb": {
+                "seb_ru": {
                     "description": "SEB Eastern Europe Small and Mid Cap Fund",
                     "type": "csv",
                     "url": "http://seb.se/pow/fmk/2500/csv/SEB_Eastern_Europe_Small_and_Mid_Cap_Fund_52990020FRYUUW71CG47.csv"
@@ -45,7 +45,7 @@
                 "FEES.ME": "Federal Grid Company of Unified Energy System",
                 "FIVE.ME": "X5 Retail Group N.V.",
                 "GAZP.ME": "Gazprom",
-                "GMKN.ME": "MMC \"NORILSK NICKEL",
+                "GMKN.ME": "MMC NORILSK NICKEL",
                 "HYDR.ME": "RusHydro",
                 "IRAO.ME": "Inter RAO",
                 "LKOH.ME": "Lukoil",
@@ -77,6 +77,43 @@
                 "UPRO.ME": "Unipro",
                 "VTBR.ME": "VTB Bank",
                 "YNDX.ME": "Yandex"
+            },
+            "aliases": {
+                "Yandex NV-A"               			: "Yandex NV-A",
+                "Sberbank"								: "Sberbank",
+                "Sistema JSFC"             				: "Sistema JSFC",
+                "Mobile Telesystems (RUS)" 				: "Mobile Telesystems (RUS)",
+                "Magnit"                   				: "Magnit",
+                "Mail.ru Group GDR"        				: "Mail.ru Group GDR",
+                "Polymetal International RUB"         	: "Polymetal International RUB",
+                "Moscow Exchange MICEX"               	: "Moscow Exchange",
+                "TCS Group Holding GDR"              	: "TCS Group Holding",
+                "MMC Norilsk Nickel"                  	: "MMC Norilsk Nickel",
+                "Ozon Holding - ADR RUB"              	: "Ozon Holding",
+                "Magnitogorsk Iron&Steel Works Russia"	: "Magnitogorsk Iron&Steel Works Russia",
+                "Phosagro GDR"                        	: "Phosagro",
+                "X 5 Retail Group GDR (RUB)"          	: "X 5 Retail Group",
+                "X 5 Retail Group GDR"                	: "X 5 Retail Group",
+                "Sberbank Preferred"                  	: "Sberbank Preferred",
+                "Alrosa"                              	: "Alrosa",
+                "Headhunter Group ADR"                	: "Headhunter Group",
+                "SEGEZHA GROUP PJSC"                  	: "Segezha Group PJSC",
+                "RusHydro" 							: "RusHydro",
+                "Global Ports GDR"           		: "Global Ports",
+                "Novolipetsk Iron and Steel" 		: "Novolipetsk Iron and Steel",
+                "LSR Group"                  		: "LSR Group",
+                "VTB Bank Ryssland MICEX"    		: "VTB Bank",
+                "Bank St Petersburg"         		: "Bank St Petersburg",
+                "Qiwi"                       : "Qiwi",
+                "VEON-ADR"                   : "VEON",
+                "HMS Group GDR"              : "HMS Group",
+                "Rostelecom"                 : "Rostelecom",
+                "M Video"                    : "M Video",
+                "Severstal"                  : "Severstal",
+                "PIK Group"                  : "PIK Group",
+                "Globaltrans Investment GDR" : "Globaltrans Investment",
+                "Obuv Rossii"                : "Obuv Rossii",
+                "Polyus (RUS)"               : "Polyus (RUS)"
             }
         }
     }

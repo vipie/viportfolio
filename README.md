@@ -24,8 +24,8 @@ available funds:
 |  MSCI Russia Fund   | msci        |
 |  UBS Equity Russia   | ubs     |
 |  Franklin FTSE Russia ETF   | franklin   |
-| SEB Eastern Europe Small and Mid Cap Fund (Russia part)      | seb       |
-| SEB Russia Fund (after 2021-05-31 merged into "SEB Eastern Europe Small and Mid Cap Fund")     | seb_old      |
+| SEB Eastern Europe Small and Mid Cap Fund (Russia part)      | seb_ru      |
+| SEB Russia Fund (after 2021-05-31 merged into "SEB Eastern Europe Small and Mid Cap Fund")     | seb   |
 
 edit config file
 - nano ./config.json

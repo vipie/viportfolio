@@ -6,7 +6,7 @@ from datetime import datetime
 
 import io
 
-class SebParser(BaseParser):
+class SebRuParser(BaseParser):
 
     def parse(self, file_loader):
         '''
@@ -31,7 +31,7 @@ class SebParser(BaseParser):
         self.parsed_data["Code"] = np.nan
         self.parsed_data.Weight = self.parsed_data.Weight.map(lambda x: float(x) * 100)
 
-class SebOldParser(BaseParser):
+class SebParser(BaseParser):
 
     def parse(self, file_loader):
         '''
